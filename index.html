@@ -4,24 +4,31 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Каталог</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="./styles.css">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="/config.js"></script>
-  <script defer src="/main.js"></script>
-  <meta name="color-scheme" content="dark light" />
+  <script src="./config.js"></script>
+  <script defer src="./main.js"></script>
 </head>
 <body>
-  <header>
-    <h1>Каталог</h1>
-    <input id="search" placeholder="Поиск..." />
-  </header>
-  <main>
-    <nav id="cats"></nav>
-    <section id="items"></section>
-  </main>
+  <div class="container">
+    <header>
+      <h1>Каталог</h1>
+      <input id="search" placeholder="Поиск..." />
+    </header>
+    
+    <main>
+      <nav id="cats"></nav>
+      <section id="items"></section>
+    </main>
+    
+    <div class="cart-section">
+      <div class="cart-info">
+        <span id="cart-count">0</span> товаров
+        <span id="cart-total">0 ₽</span>
+      </div>
+      <button id="checkout" class="checkout-btn">Оформить заказ</button>
+    </div>
+  </div>
 </body>
 </html>
 

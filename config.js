@@ -1,3 +1,3 @@
 window.APP_CONFIG = {
-  API_BASE: 'https://pomoika-api.onrender.com' // Замените на ваш Render URL
+  API_BASE: 'https://pomoika-api.onrender.com' // URL вашего Render API
 };

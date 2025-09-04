@@ -1,8 +1,6 @@
 const tg = window.Telegram?.WebApp;
 if (tg) {
   tg.expand();
-  tg.MainButton.setText('Оформить заказ');
-  tg.MainButton.hide();
 }
 
 const API_BASE = (window.APP_CONFIG && window.APP_CONFIG.API_BASE) ? window.APP_CONFIG.API_BASE : '';
@@ -17,18 +15,21 @@ async function fetchJSON(path){
 const catsEl = document.getElementById('cats');
 const itemsEl = document.getElementById('items');
 const searchEl = document.getElementById('search');
+const cartCountEl = document.getElementById('cart-count');
+const cartTotalEl = document.getElementById('cart-total');
+const checkoutBtn = document.getElementById('checkout');
 
 let allItems = [];
 let activeCat = null;
 let cart = [];
 
-function updateMainButton(){
-  if(!tg) return;
-  const total = cart.reduce((s,i)=> s + i.price, 0);
+function updateCartDisplay(){
   const count = cart.length;
-  if(count === 0){ tg.MainButton.hide(); return; }
-  tg.MainButton.setText(`Заказ (${count}) • ${total.toFixed(2)} ₽`);
-  tg.MainButton.show();
+  const total = cart.reduce((s,i)=> s + i.price, 0);
+  
+  cartCountEl.textContent = count;
+  cartTotalEl.textContent = `${total.toFixed(0)} ₽`;
+  checkoutBtn.disabled = count === 0;
 }
 
 function renderCats(cats){
@@ -58,15 +59,44 @@ function render(){
     card.className = 'card';
     card.innerHTML = `
       <div class="title">${i.title}</div>
-      <div class="price">${i.price.toFixed(2)} ₽</div>
+      <div class="price">${i.price.toFixed(0)} ₽</div>
       <div class="desc">${i.description}</div>
       <button class="add">В корзину</button>
     `;
     card.querySelector('.add').addEventListener('click', ()=>{
       cart.push(i);
-      updateMainButton();
+      updateCartDisplay();
+      
+      // Анимация добавления
+      const button = card.querySelector('.add');
+      button.textContent = '✓ Добавлено';
+      button.style.background = '#00d4aa';
+      setTimeout(() => {
+        button.textContent = 'В корзину';
+        button.style.background = '';
+      }, 1000);
     });
     itemsEl.appendChild(card);
+  }
+}
+
+function checkout(){
+  if(cart.length === 0) return;
+  
+  const total = cart.reduce((s,i)=> s + i.price, 0);
+  const order = {
+    items: cart.map(i=>({ id: i.id, title: i.title, price: i.price, category: i.category })),
+    total
+  };
+  
+  if(tg){
+    tg.sendData(JSON.stringify(order));
+    tg.close();
+  } else {
+    console.log('Заказ:', order);
+    alert('Заказ отправлен!');
+    cart = [];
+    updateCartDisplay();
   }
 }
 
@@ -75,16 +105,9 @@ async function init(){
   allItems = await fetchJSON('/api/items');
   renderCats(cats);
   render();
-  if(tg){
-    tg.MainButton.onClick(()=>{
-      const total = cart.reduce((s,i)=> s + i.price, 0);
-      const order = {
-        items: cart.map(i=>({ id: i.id, title: i.title, price: i.price, category: i.category })),
-        total
-      };
-      tg.sendData(JSON.stringify(order));
-    });
-  }
+  updateCartDisplay();
+  
+  checkoutBtn.addEventListener('click', checkout);
 }
 
 searchEl.addEventListener('input', render);
