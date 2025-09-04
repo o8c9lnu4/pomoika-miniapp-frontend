@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Каталог</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="./config.js"></script>
+  <script defer src="./main.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Каталог</h1>
+      <input id="search" placeholder="Поиск..." />
+    </header>
+    
+    <main>
+      <nav id="cats"></nav>
+      <section id="items"></section>
+    </main>
+    
+    <div class="cart-section">
+      <div class="cart-info">
+        <span id="cart-count">0</span> товаров
+        <span id="cart-total">0 ₽</span>
+      </div>
+      <button id="checkout" class="checkout-btn">Оформить заказ</button>
+    </div>
+  </div>
+</body>
+</html>
+
+
