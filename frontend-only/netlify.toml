@@ -13,3 +13,6 @@
     X-Frame-Options = "ALLOWALL"
     X-Content-Type-Options = "nosniff"
     Cache-Control = "no-cache"
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"
